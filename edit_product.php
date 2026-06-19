@@ -8,14 +8,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$id = $_GET['id'];
 
-$result = mysqli_query($conn,
-    "select * from products
-     where product_id='$id'
-     and user_id='$user_id'"
-);
+if (!isset($_POST['id']) && !isset($_POST['update'])) {
+    die("Invalid Request");
+}
 
+$id = $_POST['id'] ?? '';
+$result = mysqli_query($conn, "select * from products where product_id='$id' and user_id='$user_id'");
 $product = mysqli_fetch_assoc($result);
 
 if (!$product) {
@@ -24,30 +23,26 @@ if (!$product) {
 
 if (isset($_POST['update'])) {
 
-    $name = $_POST['product_name'];
-    $price = $_POST['price'];
+    $id       = $_POST['id'];
+    $name     = $_POST['product_name'];
+    $price    = $_POST['price'];
     $quantity = $_POST['quantity'];
-
     $image = $product['image'];
 
     if (!empty($_FILES['image']['name'])) {
 
         $image = time() . "_" . $_FILES['image']['name'];
+        $uploadPath =
+        "C:/xampp/htdocs/product_management/crud-images/" . $image;
 
-        $uploadPath = "C:/xampp/htdocs/product_management/crud-images/" . $image;
-
-        move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
+        move_uploaded_file(
+            $_FILES['image']['tmp_name'],
+            $uploadPath
+        );
     }
 
-    mysqli_query($conn,
-        "update products
-         set product_name='$name',
-             price='$price',
-             quantity='$quantity',
-             image='$image'
-         where product_id='$id'
-         and user_id='$user_id'"
-    );
+    mysqli_query($conn, "update products set product_name='$name', price='$price', quantity='$quantity', image='$image'
+         where product_id='$id' and user_id='$user_id'");
 
     header("Location: products.php");
     exit();
@@ -70,6 +65,10 @@ if (isset($_POST['update'])) {
     <form method="POST"
           enctype="multipart/form-data"
           id="editForm">
+
+        <input type="hidden"
+               name="id"
+               value="<?php echo $product['product_id']; ?>">
 
         <input type="text"
                name="product_name"
@@ -110,18 +109,14 @@ if (isset($_POST['update'])) {
 
         <span class="error-msg" id="imageErr"></span>
 
-        <br><br>
 
-        <button type="submit" name="update">
+        <button type="submit"
+                class="add"
+                name="update">
             Update Product
         </button>
-
     </form>
-
-    <br>
-
     <a href="products.php">Cancel</a>
-
 </div>
 
 <script>
@@ -165,8 +160,8 @@ document.getElementById('editForm')
     if (!valid) {
         e.preventDefault();
     }
-});
 
+});
 </script>
 
 </body>

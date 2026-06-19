@@ -47,15 +47,13 @@ if (isset($_POST['add'])) {
 
     <h2>Add Product</h2>
 
-    <!-- Show which user is adding this product -->
     <div style="
         background: #e8f4fd;
         border-left: 4px solid #007bff;
         padding: 10px 15px;
         border-radius: 5px;
         margin-bottom: 15px;
-        font-size: 14px;
-    ">
+        font-size: 14px;">
         Adding as: <strong><?php echo $_SESSION['user_name']; ?></strong>
         &nbsp;|&nbsp;
         User ID: <strong style="color:#007bff;">#<?php echo $_SESSION['user_id']; ?></strong>
@@ -66,7 +64,7 @@ if (isset($_POST['add'])) {
     <?php if ($message === "success"): ?>
         <p class="success">
             ✓ Product added successfully under User ID
-            #<?php echo $_SESSION['user_id']; ?>!
+            <?php echo $_SESSION['user_id']; ?>!
         </p>
     <?php elseif ($message === "error"): ?>
         <p class="error">Failed to add product. Try again.</p>
@@ -79,7 +77,7 @@ if (isset($_POST['add'])) {
         <span class="error-msg" id="nameErr"></span>
 
         <input type="number" name="price" step="0.01"
-               id="price" placeholder="Enter Price (₹)">
+               id="price" placeholder="Enter Price ">
         <span class="error-msg" id="priceErr"></span>
 
         <input type="number" name="quantity"
@@ -89,7 +87,7 @@ if (isset($_POST['add'])) {
         <input type="file" name="image" id="image">
         <span class="error-msg" id="imageErr"></span>
 
-        <button type="submit" name="add">Add Product</button>
+        <button type="submit" class="add" name="add">Add Product</button>
 
     </form>
 

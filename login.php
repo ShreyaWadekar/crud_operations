@@ -65,11 +65,11 @@ if (isset($_POST['login'])) {
                id="password" placeholder="Enter your Password" required>
         <span class="error-msg" id="passErr"></span>
 
-        <button type="submit" name="login">Login</button>
+        <button type="submit" class="add" name="login">Login</button>
 
     </form>
 
-    <div class="link"><a href="register.php">Register Here</a></div>
+    <div class="link">New User..? <a href="register.php">Register</a></div>
 
 </div>
 
